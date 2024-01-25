@@ -1,10 +1,19 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Page() {
   return (
     <div className="flex justify-center items-center">
       {/* Regular Sign up */}
       <div className="flex flex-col pl-6 pt-6">
+        <Link className="mb-2" href="/">
+          <Image
+            height="15"
+            width="15"
+            src={"/leftArrow.svg"}
+            alt={"leftArrow"}
+          ></Image>
+        </Link>
         <h1 className="text-stone-800 text-xl font-semibold font-['Inter'] mb-6">
           Reset Password
         </h1>

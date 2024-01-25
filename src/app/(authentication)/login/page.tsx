@@ -4,8 +4,17 @@ import Link from "next/link";
 export default function Page() {
   return (
     <div className="flex justify-center items-center">
-      {/* Regular Login */}
       <div className="flex flex-col pl-6 pt-6">
+        <Link className="mb-2" href="/">
+          <Image
+            height="15"
+            width="15"
+            src={"/leftArrow.svg"}
+            alt={"leftArrow"}
+          ></Image>
+        </Link>
+
+        {/* Regular Login */}
         <h1 className="text-stone-800 text-xl font-semibold font-['Inter'] mb-6">
           Login
         </h1>
@@ -85,7 +94,10 @@ export default function Page() {
             <span className="text-stone-800 text-xs font-normal font-['Inter']">
               Don’t have an account?{" "}
             </span>
-            <Link className="text-stone-800 text-xs font-normal font-['Inter'] underline" href="/register">
+            <Link
+              className="text-stone-800 text-xs font-normal font-['Inter'] underline"
+              href="/register"
+            >
               Sign up
             </Link>
           </div>
