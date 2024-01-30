@@ -1,5 +1,8 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 export default function Page() {
   return (
@@ -46,7 +49,7 @@ export default function Page() {
           ></input>
 
           <input
-            className="w-72 h-9 bg-stone-800 rounded text-white"
+            className="w-72 h-9 bg-stone-800 rounded text-white cursor-pointer"
             type="submit"
             value="Submit"
           />
@@ -75,13 +78,15 @@ export default function Page() {
               height={50}
               alt="Facebook Icon"
             />
-            <Image
-              className="ml-2 mr-2"
-              src="/googleIcon.svg"
-              width={50}
-              height={50}
-              alt="Google Icon"
-            />
+
+            <div className="ml-2 mr-2 cursor-pointer" onClick={()=> signIn('google')}>
+              <Image
+                src="/googleIcon.svg"
+                width={50}
+                height={50}
+                alt="Google Icon"
+              />
+            </div>
             <Image
               className="ml-2 mr-2"
               src="/appleIcon.svg"

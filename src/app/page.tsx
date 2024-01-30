@@ -12,7 +12,7 @@ export default function Home() {
           alt="home picture"
         ></Image>
       </div>
-      <div className="flex justify-center items-center w-72 h-9 bg-stone-800 rounded mt-4">
+      <div className="flex justify-center items-center w-72 h-9 bg-stone-800 rounded mt-4 cursor-pointer">
         <Link
           href="/login"
           className=" text-white text-sm font-normal font-['Inter']"
@@ -20,7 +20,8 @@ export default function Home() {
           Login
         </Link>
       </div>
-      <div className="flex justify-center items-center w-72 h-9 bg-white rounded border border-stone-800 mt-4">
+      <div className="flex justify-center items-center w-72 h-9 bg-white rounded border border-stone-800 mt-4 cursor-pointer"
+      >
         <Link
           href="/register"
           className="text-stone-800 text-sm font-normal font-['Inter']"
