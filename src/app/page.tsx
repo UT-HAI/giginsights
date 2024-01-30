@@ -20,8 +20,7 @@ export default function Home() {
           Login
         </Link>
       </div>
-      <div className="flex justify-center items-center w-72 h-9 bg-white rounded border border-stone-800 mt-4 cursor-pointer"
-      >
+      <div className="flex justify-center items-center w-72 h-9 bg-white rounded border border-stone-800 mt-4 cursor-pointer">
         <Link
           href="/register"
           className="text-stone-800 text-sm font-normal font-['Inter']"

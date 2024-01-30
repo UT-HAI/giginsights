@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -79,7 +79,10 @@ export default function Page() {
               alt="Facebook Icon"
             />
 
-            <div className="ml-2 mr-2 cursor-pointer" onClick={()=> signIn('google')}>
+            <div
+              className="ml-2 mr-2 cursor-pointer"
+              onClick={() => signIn("google")}
+            >
               <Image
                 src="/googleIcon.svg"
                 width={50}
