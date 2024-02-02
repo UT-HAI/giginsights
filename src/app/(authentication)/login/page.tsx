@@ -71,14 +71,6 @@ export default function Page() {
             Sign up using Socials
           </p>
           <div className="mt-2 flex flex-row">
-            <Image
-              className="ml-2 mr-2"
-              src="/facebookIcon.svg"
-              width={50}
-              height={50}
-              alt="Facebook Icon"
-            />
-
             <div
               className="ml-2 mr-2 cursor-pointer"
               onClick={() => signIn("google")}
@@ -90,13 +82,6 @@ export default function Page() {
                 alt="Google Icon"
               />
             </div>
-            <Image
-              className="ml-2 mr-2"
-              src="/appleIcon.svg"
-              width={50}
-              height={50}
-              alt="Apple Icon"
-            />
           </div>
           <div className="mt-2">
             <span className="text-stone-800 text-xs font-normal font-['Inter']">

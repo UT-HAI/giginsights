@@ -12,6 +12,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link
+        rel="icon"
+        href="/magnifyingglasscar.jpg"
+        type="image/<generated>"
+        sizes="<generated>"
+      />
       <body>{children}</body>
     </html>
   );
