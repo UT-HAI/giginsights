@@ -5,6 +5,23 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 
 export default function Page() {
+
+const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    // Here we call signIn with 'credentials' and pass username and password
+    const result = await signIn('credentials', {
+      redirect: true, // Set to true if you want to redirect to the specified callback URL on success
+      email: email,
+      password: password,
+    });
+
+    console.log(result);
+  };
+
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col pl-6 pt-6">
@@ -21,7 +38,7 @@ export default function Page() {
         <h1 className="text-stone-800 text-xl font-semibold font-['Inter'] mb-6">
           Login
         </h1>
-        <form className="flex flex-col" action="/" method="get">
+        <form className="flex flex-col" onSubmit={handleSubmit} method="get">
           <label
             className="text-stone-800 test-sm font-normal font-['Inter'] mb-2"
             htmlFor="email"
