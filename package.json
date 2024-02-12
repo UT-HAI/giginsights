@@ -11,6 +11,7 @@
     "populate": "node ./scripts/populate.js"
   },
   "dependencies": {
+    "@prisma/client": "^5.9.1",
     "@vercel/postgres": "^0.7.2",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.1",
@@ -20,6 +21,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@iconify/tailwind": "^0.1.4",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -29,6 +31,7 @@
     "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "prettier": "^3.2.4",
+    "prisma": "^5.9.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

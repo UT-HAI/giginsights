@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { sql } from "@vercel/postgres";
 import bcrypt from "bcrypt";
+import { PrismaClient } from '@prisma/client'
 
 const handler = NextAuth({
   pages: {
@@ -20,7 +20,7 @@ const handler = NextAuth({
         email: { label: "email", type: "text" },
         password: { label: "password", type: "password" }
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // Add logic here to look up the user from the credentials supplied
 
         if (!credentials) {
@@ -30,24 +30,29 @@ const handler = NextAuth({
         const email = credentials['email'];
         const password = credentials['password']
 
-        const data = await sql`SELECT * FROM users WHERE email = ${email}`;
-        const rows = data["rows"];
+        const prisma = new PrismaClient();
+        const user = await prisma.users.findUnique({
+          where: { email: email
+          }
+        })
 
-
-        if (rows.length === 0 || rows[0]["authtype"] !== "Credential") {
+        if (user === null) {
           return null;
         }
 
+        const credential = await prisma.credentials.findFirst({
+          where: {
+            user_id: user.id
+          }
+        })
 
-        const id = rows[0].userid;
-        const credentialsData = await sql`select * from credentials where userid = ${id}`
+        if (credential === null || credential.passwordhash === null) {
+          return null;
+        }
 
-        const rowData = credentialsData.rows;
-        const hash = rowData[0].passwordhash
-
-        if (bcrypt.compareSync(password, hash)) {
+        if (bcrypt.compareSync(password, credential.passwordhash)) {
           console.log("password match");
-          return { id: id, email: email }
+          return { id: user.id.toString(), email: email }
         } else {
           console.log("no password match");
           return null;
@@ -55,53 +60,68 @@ const handler = NextAuth({
       }
     })
   ],
+
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 Days
   },
   callbacks: {
     async signIn({ account, profile }) {
-      // account is from next, profile is from google
-      console.log(account, profile);
-      
-      if(account == null) {
+      if (account == null) {
         return false;
       }
-      
+
       if (account.provider !== "google") {
-        console.log("returning true cause credentials");
+        console.log("returning true because credentials");
         return true
       }
 
-      if(profile == null) {
+      if (profile == null) {
         return false;
       }
 
       const OAuthEmail = profile["email"];
       const OAuthName = profile["name"];
-      const currentTimestamp = new Date().toISOString();
 
-      const data = await sql`SELECT * FROM users WHERE email = ${OAuthEmail}`;
-      const rows = data["rows"];
-      // if there's no rows, then create an OAuth account
-      if (rows.length == 0) {
-        // TODO change this to prisma
-        const newUser =
-          await sql`INSERT INTO users (email, name, AuthType, CreatedAt, UpdatedAt)
-VALUES (${OAuthEmail}, ${OAuthName}, ${"Google"}, ${currentTimestamp}, ${currentTimestamp})
-RETURNING UserId`;
-
-        const newUserId = newUser.rows[0]["userid"]; // Assuming 'id' is the name of the identity column in 'users' table
-
-        await sql`INSERT INTO googleaccounts (UserId, Email, CreatedAt, UpdatedAt)
-VALUES (${newUserId}, ${OAuthEmail}, ${currentTimestamp}, ${currentTimestamp})`;
-      } else if (rows[0]["authtype"] !== "Google") {
+      if (!OAuthName || !OAuthEmail) {
         return false;
       }
-      // if there's a row, make sure it matches the OAuth type, otherwise return False
+
+      const prisma = new PrismaClient();
+
+      // aka if there are none, create a record
+      if (await prisma.users.count({ where: { email: OAuthEmail } }) === 0) {
+        console.log("creating account");
+        const new_user = await prisma.users.create({
+          data: {
+            email: OAuthEmail,
+            name: OAuthName
+          }
+        })
+
+        await prisma.credentials.create({
+          data: {
+            user_id: new_user.id,
+            authtype: "google"
+          }
+        })
+      } else {
+        console.log("signing in with current user");
+        const user = await prisma.users.findFirst({ where: { email: OAuthEmail }})
+        if(user === null) {
+          console.log("could not find user");
+          return false;
+        }
+        const credential = await prisma.credentials.findFirst({where: {user_id: user.id}});
+        if (credential === null || credential.authtype !== "google") {
+          console.log("wrong credential");
+          return false;
+        }
+      }
       return true;
+
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return baseUrl + "/home";
     },
   },
