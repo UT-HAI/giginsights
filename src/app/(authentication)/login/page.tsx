@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react";
 
 export default function Page() {
 
-const handleSubmit = async (event) => {
+const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const email = event.target.email.value;

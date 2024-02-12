@@ -13,7 +13,6 @@ const handler = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
-    // TODO
     CredentialsProvider({
       name: "credentials",
       credentials: {

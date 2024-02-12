@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation'
 
 export default function Page() {
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const router = useRouter()
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent default form submission
 
     // Form data to be sent
