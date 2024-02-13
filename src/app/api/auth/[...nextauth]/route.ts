@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
 const handler = NextAuth({
   pages: {
@@ -17,7 +17,7 @@ const handler = NextAuth({
       name: "credentials",
       credentials: {
         email: { label: "email", type: "text" },
-        password: { label: "password", type: "password" }
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
         // Add logic here to look up the user from the credentials supplied
@@ -26,14 +26,13 @@ const handler = NextAuth({
           return null;
         }
 
-        const email = credentials['email'];
-        const password = credentials['password']
+        const email = credentials["email"];
+        const password = credentials["password"];
 
         const prisma = new PrismaClient();
         const user = await prisma.users.findUnique({
-          where: { email: email
-          }
-        })
+          where: { email: email },
+        });
 
         if (user === null) {
           return null;
@@ -41,9 +40,9 @@ const handler = NextAuth({
 
         const credential = await prisma.credentials.findFirst({
           where: {
-            user_id: user.id
-          }
-        })
+            user_id: user.id,
+          },
+        });
 
         if (credential === null || credential.passwordhash === null) {
           return null;
@@ -51,17 +50,17 @@ const handler = NextAuth({
 
         if (bcrypt.compareSync(password, credential.passwordhash)) {
           console.log("password match");
-          return { id: user.id.toString(), email: email }
+          return { id: user.id.toString(), email: email };
         } else {
           console.log("no password match");
           return null;
         }
-      }
-    })
+      },
+    }),
   ],
 
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 Days
   },
   callbacks: {
@@ -72,7 +71,7 @@ const handler = NextAuth({
 
       if (account.provider !== "google") {
         console.log("returning true because credentials");
-        return true
+        return true;
       }
 
       if (profile == null) {
@@ -89,36 +88,39 @@ const handler = NextAuth({
       const prisma = new PrismaClient();
 
       // aka if there are none, create a record
-      if (await prisma.users.count({ where: { email: OAuthEmail } }) === 0) {
+      if ((await prisma.users.count({ where: { email: OAuthEmail } })) === 0) {
         console.log("creating account");
         const new_user = await prisma.users.create({
           data: {
             email: OAuthEmail,
-            name: OAuthName
-          }
-        })
+            name: OAuthName,
+          },
+        });
 
         await prisma.credentials.create({
           data: {
             user_id: new_user.id,
-            authtype: "google"
-          }
-        })
+            authtype: "google",
+          },
+        });
       } else {
         console.log("signing in with current user");
-        const user = await prisma.users.findFirst({ where: { email: OAuthEmail }})
-        if(user === null) {
+        const user = await prisma.users.findFirst({
+          where: { email: OAuthEmail },
+        });
+        if (user === null) {
           console.log("could not find user");
           return false;
         }
-        const credential = await prisma.credentials.findFirst({where: {user_id: user.id}});
+        const credential = await prisma.credentials.findFirst({
+          where: { user_id: user.id },
+        });
         if (credential === null || credential.authtype !== "google") {
           console.log("wrong credential");
           return false;
         }
       }
       return true;
-
     },
     async redirect({ baseUrl }) {
       return baseUrl + "/home";

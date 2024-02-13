@@ -4,11 +4,11 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const router = useRouter()
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const router = useRouter();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent default form submission
@@ -19,10 +19,10 @@ export default function Page() {
 
     try {
       // Send form data to your API
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formProps),
       });
@@ -31,11 +31,11 @@ export default function Page() {
         const result = await response.json();
         setErrors(result || {});
       } else {
-        router.replace("/login")
+        router.replace("/login");
       }
     } catch (error) {
       console.error(error);
-      setErrors({ general: 'An error occurred, please try again.' });
+      setErrors({ general: "An error occurred, please try again." });
     }
   };
 
@@ -124,7 +124,9 @@ export default function Page() {
           ></input>
 
           <div className="text-red-500 mb-4 text-sm">
-            {errors.repassword && <div className="error">{errors.repassword}</div>}
+            {errors.repassword && (
+              <div className="error">{errors.repassword}</div>
+            )}
           </div>
 
           <input
@@ -133,7 +135,6 @@ export default function Page() {
             value="Submit"
           />
         </form>
-
 
         {/* Sign up using Socials */}
         <div className="flex flex-col items-center mt-4">

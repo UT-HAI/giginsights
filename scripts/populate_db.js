@@ -1,5 +1,5 @@
 const { sql } = require("@vercel/postgres");
-require("dotenv").config({ path: ".env.local" });
+require("dotenv").config({ path: ".env" });
 
 // Define an async function to query the database
 async function fetchUsers() {

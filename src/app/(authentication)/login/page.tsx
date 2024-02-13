@@ -5,15 +5,14 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 
 export default function Page() {
-
-const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const email = event.target.email.value;
     const password = event.target.password.value;
 
     // Here we call signIn with 'credentials' and pass username and password
-    const result = await signIn('credentials', {
+    const result = await signIn("credentials", {
       redirect: true, // Set to true if you want to redirect to the specified callback URL on success
       email: email,
       password: password,
