@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { ActionLink } from "../components/ActionLink";
 
 export default function Page() {
   const handleSignOut = (e: any) => {
@@ -13,15 +13,6 @@ export default function Page() {
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col pl-6 pt-6">
-        <Link className="mb-2" href="/">
-          <Image
-            height="15"
-            width="15"
-            src={"/leftArrow.svg"}
-            alt={"leftArrow"}
-          ></Image>
-        </Link>
-
         <h1 className="text-stone-800 text-2xl font-semibold font-['Inter'] mb-6">
           Home
         </h1>
@@ -30,17 +21,9 @@ export default function Page() {
           What would you like to do?
         </h2>
 
-        <Link className="flex w-72 h-9 bg-stone-800 rounded text-white cursor-pointer mb-6 justify-center items-center" href="/profile">
-          Update My Driver Profile
-        </Link>
-
-        <Link className="flex w-72 h-9 bg-stone-800 rounded text-white cursor-pointer mb-6 justify-center items-center" href="/quests">
-          Upload quest data
-        </Link>
-
-        <Link className="flex w-72 h-9 bg-stone-800 rounded text-white cursor-pointer mb-6 justify-center items-center" href="/trips">
-          Check trip data
-        </Link>
+        <ActionLink href={"/profile"} label={"Update My Driver Profile"} />
+        <ActionLink href={"/quests"} label={"Upload Quest Data"} />
+        <ActionLink href={"/trips"} label={"Check Trip Data"} />
 
         <a
           href="#"

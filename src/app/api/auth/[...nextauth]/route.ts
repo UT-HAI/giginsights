@@ -50,7 +50,7 @@ const handler = NextAuth({
 
         if (bcrypt.compareSync(password, credential.passwordhash)) {
           console.log("password match");
-          return { id: user.id.toString(), email: email };
+          return { id: user.id.toString(), email: email, name: user.name };
         } else {
           console.log("no password match");
           return null;

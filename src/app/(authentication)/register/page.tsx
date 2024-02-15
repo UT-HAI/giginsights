@@ -2,9 +2,10 @@
 
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { NavigationIconLink } from "@/app/components/NavigationIconLink";
+import { InputField } from "@/app/components/InputField";
 
 export default function Page() {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -43,86 +44,48 @@ export default function Page() {
     <div className="flex justify-center items-center">
       {/* Regular Sign up */}
       <div className="flex flex-col pl-6 pt-6">
-        <Link className="mb-2" href="/">
-          <Image
-            height="15"
-            width="15"
-            src={"/leftArrow.svg"}
-            alt={"leftArrow"}
-          ></Image>
-        </Link>
+        <NavigationIconLink href="/" />
+
         <h1 className="text-stone-800 text-xl font-semibold font-['Inter'] mb-6">
           New Account
         </h1>
         <form className="flex flex-col" onSubmit={handleSubmit}>
-          <label
-            className="text-stone-800 font-normal font-['Inter'] mb-2"
-            htmlFor="name"
-          >
-            Full Name
-          </label>
-          <input
-            className="p-3 w-72 h-9 rounded border border-stone-300 mb-2"
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Full Name"
-          ></input>
-
+          <InputField
+            id={"name"}
+            type={"text"}
+            placeholder={"Full name"}
+            label={"Full Name"}
+          />
           <div className="text-red-500 mb-4 text-sm">
             {errors.name && <div className="error">{errors.name}</div>}
           </div>
 
-          <label
-            className="text-stone-800 font-normal font-['Inter'] mb-2"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            className="p-3 w-72 h-9 rounded border border-stone-300 mb-2"
-            id="email"
-            name="email"
-            type="text"
-            placeholder="Email"
-          ></input>
-
+          <InputField
+            id={"email"}
+            type={"text"}
+            placeholder={"Email"}
+            label={"Email"}
+          />
           <div className="text-red-500 mb-4 text-sm">
             {errors.email && <div className="error">{errors.email}</div>}
           </div>
 
-          <label
-            className="text-stone-800 font-normal font-['Inter'] mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className="p-3 w-72 h-9 rounded border border-stone-300 mb-2"
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Password"
-          ></input>
-
+          <InputField
+            id={"password"}
+            type={"password"}
+            placeholder={"Password"}
+            label={"Password"}
+          />
           <div className="text-red-500 mb-4 text-sm">
             {errors.password && <div className="error">{errors.password}</div>}
           </div>
 
-          <label
-            className="text-stone-800 font-normal font-['Inter'] mb-2"
-            htmlFor="repassword"
-          >
-            Confirm Password
-          </label>
-          <input
-            className="p-3 w-72 h-9 rounded border border-stone-300 mb-2"
-            id="repassword"
-            name="repassword"
-            type="password"
-            placeholder="Confirm Password"
-          ></input>
-
+          <InputField
+            id={"repassword"}
+            type={"password"}
+            placeholder={"Confirm Password"}
+            label={"Confirm Password"}
+          />
           <div className="text-red-500 mb-4 text-sm">
             {errors.repassword && (
               <div className="error">{errors.repassword}</div>

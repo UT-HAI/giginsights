@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { NavigationIconLink } from "@/app/components/NavigationIconLink";
+import { InputField } from "@/app/components/InputField";
 
 export default function Page() {
   const handleSubmit = async (event: any) => {
@@ -24,46 +26,25 @@ export default function Page() {
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col pl-6 pt-6">
-        <Link className="mb-2" href="/">
-          <Image
-            height="15"
-            width="15"
-            src={"/leftArrow.svg"}
-            alt={"leftArrow"}
-          ></Image>
-        </Link>
+        <NavigationIconLink href={"/"} />
 
         {/* Regular Login */}
         <h1 className="text-stone-800 text-xl font-semibold font-['Inter'] mb-6">
           Login
         </h1>
         <form className="flex flex-col" onSubmit={handleSubmit} method="get">
-          <label
-            className="text-stone-800 test-sm font-normal font-['Inter'] mb-2"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            className="p-3 w-72 h-9 rounded border border-stone-300 mb-4"
-            id="email"
-            type="text"
-            placeholder="Email"
-          ></input>
-
-          <label
-            className="text-stone-800 test-sm font-normal font-['Inter'] mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className="p-3 w-72 h-9 rounded border border-stone-300 mb-4"
-            id="password"
-            type="password"
-            placeholder="Password"
-          ></input>
-
+          <InputField
+            id={"email"}
+            type={"text"}
+            placeholder={"Email"}
+            label={"Email"}
+          />
+          <InputField
+            id={"password"}
+            type={"password"}
+            placeholder={"Password"}
+            label={"Password"}
+          />
           <input
             className="w-72 h-9 bg-stone-800 rounded text-white cursor-pointer"
             type="submit"

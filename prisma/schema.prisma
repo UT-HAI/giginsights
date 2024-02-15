@@ -24,15 +24,15 @@ model credentials {
   users        users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-// model profiles {
-//   id        Int     @id @default(autoincrement())
-//   user_id   Int     @unique
-//   age       Int?
-//   gender    String?
-//   race      String? @db.VarChar
-//   ethnicity String?
-//   income    String?
-// }
+model profiles {
+  id        Int     @id @default(autoincrement())
+  user_id   Int     @unique
+  age       Int?
+  gender    String?
+  race      String? @db.VarChar
+  ethnicity String?
+  income    String?
+}
 
 enum authtype {
   google
