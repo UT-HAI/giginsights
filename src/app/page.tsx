@@ -1,7 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
-export default function Home() {
+export default async function Home() {
+
+  const session = await getServerSession();
+  if (session?.user) {
+    redirect("/home")
+  }
+
   return (
     <div className="container mx-auto flex flex-col items-center justify-center min-h-screen">
       <div className="flex">
