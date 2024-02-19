@@ -1,8 +1,13 @@
 "use client";
 
 import { NavigationIconLink } from "@/app/components/NavigationIconLink";
+import { useState } from "react";
+import { ErrorBar } from "@/app/components/ErrorBar";
 
 export default function Page() {
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [success, setSuccess] = useState<boolean>(false)
+
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent default form submission behavior
 
@@ -10,7 +15,7 @@ export default function Page() {
     const data = Object.fromEntries(formData); // Convert to a plain object
 
     try {
-      const response = await fetch("/api/profile", {
+      const response = await fetch("/api/profile/survey", {
         // Your API endpoint
         method: "POST",
         headers: {
@@ -18,10 +23,17 @@ export default function Page() {
         },
         body: JSON.stringify(data), // Convert data to JSON
       });
-      if (!response.ok) throw new Error("Network response was not ok");
-      console.log("updated");
+      if (!response.ok) {
+        const result = await response.json();
+        setErrors(result || {})
+        setSuccess(false);
+      } else {
+        setSuccess(true);
+        setErrors({})
+      }
     } catch (error) {
       console.log(error);
+      setErrors({ general: "An error occurred, please try again." });
     }
   };
 
@@ -30,7 +42,6 @@ export default function Page() {
       <div className="flex flex-col pl-6 pt-6">
         <NavigationIconLink href="/profile" />
 
-        {/* Regular Login */}
         <h1 className="text-stone-800 text-xl font-semibold font-['Inter'] mb-6">
           Driver Survey
         </h1>
@@ -49,6 +60,8 @@ export default function Page() {
             placeholder="Age"
           ></input>
 
+          <ErrorBar error={errors.age} />
+
           <label
             className="text-stone-800 text-sm font-normal font-['Inter'] mb-2"
             htmlFor="gender"
@@ -60,10 +73,13 @@ export default function Page() {
             name="gender"
             id="gender"
           >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="none">Prefer not to self-describe</option>
+            <option value="" disabled selected>Select your gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Prefer not to self-describe">Prefer not to self-describe</option>
           </select>
+
+          <ErrorBar error={errors.gender} />
 
           <label
             className="text-stone-800 text-sm font-normal font-['Inter'] mb-2"
@@ -76,17 +92,18 @@ export default function Page() {
             name="race"
             id="race"
           >
-            <option value="white">White</option>
-            <option value="black">Black or African American</option>
-            <option value="indian">American Indian or Alaska Native</option>
-            <option value="asian">Asian</option>
-            <option value="hawaiian">
-              Native Hawaiian or Other Pacific Islander
-            </option>
-            <option value="two">Two or more race listed here</option>
-            <option value="not">A race not listed here</option>
-            <option value="noanswer">Prefer not to answer</option>
+            <option value="" disabled selected>Select your Race</option>
+            <option value="White">White</option>
+            <option value="Black or African American">Black or African American</option>
+            <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+            <option value="Asian">Asian</option>
+            <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+            <option value="Two or more race listed here">Two or more race listed here</option>
+            <option value="A race not listed here">A race not listed here</option>
+            <option value="Prefer not to answer">Prefer not to answer</option>
           </select>
+
+          <ErrorBar error={errors.race} />
 
           <fieldset className="mb-4" name="ethnicity">
             <legend className="text-stone-800 text-sm font-normal font-['Inter'] mb-2">
@@ -116,6 +133,8 @@ export default function Page() {
             </label>
           </fieldset>
 
+          <ErrorBar error={errors.ethnicity} />
+
           <label
             className="text-stone-800 text-sm font-normal font-['Inter'] mb-2"
             htmlFor="income"
@@ -127,6 +146,7 @@ export default function Page() {
             name="income"
             id="income"
           >
+            <option value="" disabled selected>Select your Income</option>
             <option value="Below $25,000">Below $25,000</option>
             <option value="$25,001 - $49,999">$25,001 - $49,999</option>
             <option value="$50,000 - $74,999">$50,000 - $74,999</option>
@@ -136,12 +156,19 @@ export default function Page() {
             <option value="Prefer not to answer">Prefer not to answer</option>
           </select>
 
+          <ErrorBar error={errors.income} />
+
           <input
             className="w-72 h-9 bg-stone-800 rounded text-white cursor-pointer"
             type="submit"
             value="Submit"
           />
         </form>
+        {success && (
+          <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 mt-2" role="alert">
+            Data updated successfully
+          </div>
+        )}
       </div>
     </div>
   );

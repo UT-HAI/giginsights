@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { ActionLink } from "../components/ActionLink";
 

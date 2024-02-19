@@ -1,43 +1,33 @@
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
+import { z, ZodError } from "zod";
+
+const registerSchema = z
+  .object({
+    name: z.string().min(1, "Name cannot be empty."),
+    email: z.string().email("Invalid email address."),
+    password: z.string().min(8, "Password must be at least 8 characters long."),
+    repassword: z.string(),
+  })
+  .refine((data) => data.password === data.repassword, {
+    message: "Passwords do not match.",
+    path: ["repassword"], // This shows which field the error is associated with
+  });
 
 export async function POST(request: Request) {
   const fields = await request.json();
 
-  let errors: Record<string, string> = {};
+  let validation = registerSchema.safeParse(fields);
 
-  if (!fields.name || fields.name.trim() === "") {
-    errors.name = "Name cannot be empty.";
-  }
+  if (!validation.success) {
+    // Convert ZodError into a more friendly format
+    let errors: Record<string, string> = {};
+    validation.error.errors.forEach((error) => {
+      errors[error.path[0]] = error.message;
+    });
 
-  if (!fields.email || !/^\S+@\S+\.\S+$/.test(fields.email)) {
-    errors.email = "Invalid email address.";
-  }
-
-  const prisma = new PrismaClient();
-
-  if (
-    await prisma.users.findUnique({
-      where: {
-        email: fields.email,
-      },
-    })
-  ) {
-    errors.email = "A user with that email already exists";
-  }
-
-  if (!fields.password || fields.password.length < 8) {
-    errors.password = "Password must be at least 8 characters long.";
-  }
-
-  if (fields.password !== fields.repassword) {
-    errors.repassword = "Passwords do not match.";
-  }
-
-  if (Object.keys(errors).length > 0) {
-    const encodedErrors = JSON.stringify(errors);
-    return new Response(encodedErrors, {
+    return new Response(JSON.stringify(errors), {
       status: 400,
       headers: {
         "Content-Type": "application/json",
@@ -45,15 +35,41 @@ export async function POST(request: Request) {
     });
   }
 
+  const validatedData = validation.data;
+
+  const prisma = new PrismaClient();
+
+  // Check if user exists
+  if (
+    await prisma.users.findUnique({
+      where: {
+        email: validatedData.email,
+      },
+    })
+  ) {
+    return new Response(
+      JSON.stringify({ email: "A user with that email already exists" }),
+      {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
+
+  // Create the user
   const newUser = await prisma.users.create({
     data: {
-      email: fields.email,
-      name: fields.name,
+      email: validatedData.email,
+      name: validatedData.name,
     },
   });
 
-  const hash = bcrypt.hashSync(fields.password, 10);
+  // Hash the password
+  const hash = bcrypt.hashSync(validatedData.password, 10);
 
+  // Create credentials record
   await prisma.credentials.create({
     data: {
       user_id: newUser.id,
@@ -62,5 +78,6 @@ export async function POST(request: Request) {
     },
   });
 
+  // Redirect to login
   redirect("/login");
 }

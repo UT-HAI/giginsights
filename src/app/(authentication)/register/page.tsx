@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { NavigationIconLink } from "@/app/components/NavigationIconLink";
 import { InputField } from "@/app/components/InputField";
+import { ErrorBar } from "@/app/components/ErrorBar";
 
 export default function Page() {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -56,9 +57,8 @@ export default function Page() {
             placeholder={"Full name"}
             label={"Full Name"}
           />
-          <div className="text-red-500 mb-4 text-sm">
-            {errors.name && <div className="error">{errors.name}</div>}
-          </div>
+          
+          <ErrorBar error = {errors.name}/>
 
           <InputField
             id={"email"}
@@ -66,9 +66,8 @@ export default function Page() {
             placeholder={"Email"}
             label={"Email"}
           />
-          <div className="text-red-500 mb-4 text-sm">
-            {errors.email && <div className="error">{errors.email}</div>}
-          </div>
+
+          <ErrorBar error={errors.email}/>
 
           <InputField
             id={"password"}
@@ -76,9 +75,8 @@ export default function Page() {
             placeholder={"Password"}
             label={"Password"}
           />
-          <div className="text-red-500 mb-4 text-sm">
-            {errors.password && <div className="error">{errors.password}</div>}
-          </div>
+
+          <ErrorBar error={errors.password}/>
 
           <InputField
             id={"repassword"}
@@ -86,11 +84,8 @@ export default function Page() {
             placeholder={"Confirm Password"}
             label={"Confirm Password"}
           />
-          <div className="text-red-500 mb-4 text-sm">
-            {errors.repassword && (
-              <div className="error">{errors.repassword}</div>
-            )}
-          </div>
+          
+          <ErrorBar error={errors.repassword}/>
 
           <input
             className="w-72 h-9 bg-stone-800 rounded text-white cursor-pointer"

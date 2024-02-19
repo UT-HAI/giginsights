@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { NavigationIconLink } from "../components/NavigationIconLink";
 import { ActionLink } from "../components/ActionLink";
+import { signOut } from "next-auth/react";
 
 export default function Page() {
   return (
