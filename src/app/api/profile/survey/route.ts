@@ -3,19 +3,65 @@ import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
 
 const surveySchema = z.object({
-  age: z.coerce.number().int().min(18, "Must be over 18").max(99, "Must be under 99"),
+  age: z.coerce
+    .number()
+    .int()
+    .min(18, "Must be over 18")
+    .max(99, "Must be under 99"),
   gender: z.string(),
   race: z.string(),
   ethnicity: z.string(),
-  income: z.string()
-})
+  income: z.string(),
+});
+
+export async function GET(request: Request) {
+  // @ts-ignore
+  const session = await getServerSession({ request });
+  const email = session?.user?.email;
+
+  if (!email) {
+    throw new Error("Email not found");
+  }
+
+  const prisma = new PrismaClient();
+  const user = await prisma.users.findFirst({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!user) {
+    return new Response(null, {
+      status: 500,
+    });
+  }
+
+  const data = await prisma.profiles.findFirst({
+    where: {
+      user_id: user.id,
+    },
+  });
+
+  if (!data) {
+    return new Response(null, {
+      status: 404,
+    });
+  } else {
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+}
 
 export async function POST(request: Request) {
   // @ts-ignore
   const session = await getServerSession({ request });
   const email = session?.user?.email;
   const body = await request.json();
-  const validation = surveySchema.safeParse(body)
+  const validation = surveySchema.safeParse(body);
   if (!validation.success) {
     let errors: Record<string, string> = {};
     validation.error.errors.forEach((error) => {
@@ -31,7 +77,7 @@ export async function POST(request: Request) {
   }
 
   if (!email) {
-    throw new Error("Email not found")
+    throw new Error("Email not found");
   }
 
   const data = validation.data;
@@ -39,26 +85,26 @@ export async function POST(request: Request) {
   const prisma = new PrismaClient();
   const user = await prisma.users.findFirst({
     where: {
-      email: email
-    }
-  })
+      email: email,
+    },
+  });
 
   if (!user) {
     return new Response(null, {
       status: 500,
-    })
+    });
   }
 
   await prisma.profiles.upsert({
     where: {
-      user_id: user.id
+      user_id: user.id,
     },
     update: {
       age: data.age,
       gender: data.gender,
       race: data.race,
       ethnicity: data.ethnicity,
-      income: data.income
+      income: data.income,
     },
     create: {
       user_id: user.id,
@@ -66,9 +112,9 @@ export async function POST(request: Request) {
       gender: data.gender,
       race: data.race,
       ethnicity: data.ethnicity,
-      income: data.income
-    }
-  })
+      income: data.income,
+    },
+  });
 
   return new Response(null, {
     status: 200,

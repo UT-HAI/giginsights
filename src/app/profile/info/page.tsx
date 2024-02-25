@@ -3,10 +3,14 @@
 import { NavigationIconLink } from "@/app/components/NavigationIconLink";
 import { useState } from "react";
 import { ErrorBar } from "@/app/components/ErrorBar";
+import { SelectCities } from "@/app/components/SelectCities";
+import { DynamicGigAppJobs } from "@/app/components/DynamicGigAppJobs";
+import { DynamicContractorJobs } from "@/app/components/DynamicContractorJobs";
+import { DynamicW2Jobs } from "@/app/components/DynamicW2Jobs";
 
 export default function Page() {
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [success, setSuccess] = useState<boolean>(false)
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [success, setSuccess] = useState<boolean>(false);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent default form submission behavior
@@ -25,11 +29,11 @@ export default function Page() {
       });
       if (!response.ok) {
         const result = await response.json();
-        setErrors(result || {})
+        setErrors(result || {});
         setSuccess(false);
       } else {
         setSuccess(true);
-        setErrors({})
+        setErrors({});
       }
     } catch (error) {
       console.log(error);
@@ -59,6 +63,12 @@ export default function Page() {
             type="text"
             placeholder="Rating"
           ></input>
+
+          <SelectCities />
+
+          <DynamicGigAppJobs />
+          <DynamicContractorJobs />
+          <DynamicW2Jobs />
 
           <input
             className="w-72 h-9 bg-stone-800 rounded text-white cursor-pointer"

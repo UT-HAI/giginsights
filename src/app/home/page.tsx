@@ -23,6 +23,7 @@ export default function Page() {
         <ActionLink href={"/profile"} label={"Update My Driver Profile"} />
         <ActionLink href={"/quests"} label={"Upload Quest Data"} />
         <ActionLink href={"/trips"} label={"Check Trip Data"} />
+        <ActionLink href={"/calendar"} label={"Check Daily Earnings"} />
 
         <a
           href="#"

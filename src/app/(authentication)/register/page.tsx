@@ -57,8 +57,8 @@ export default function Page() {
             placeholder={"Full name"}
             label={"Full Name"}
           />
-          
-          <ErrorBar error = {errors.name}/>
+
+          <ErrorBar error={errors.name} />
 
           <InputField
             id={"email"}
@@ -67,7 +67,7 @@ export default function Page() {
             label={"Email"}
           />
 
-          <ErrorBar error={errors.email}/>
+          <ErrorBar error={errors.email} />
 
           <InputField
             id={"password"}
@@ -76,7 +76,7 @@ export default function Page() {
             label={"Password"}
           />
 
-          <ErrorBar error={errors.password}/>
+          <ErrorBar error={errors.password} />
 
           <InputField
             id={"repassword"}
@@ -84,8 +84,8 @@ export default function Page() {
             placeholder={"Confirm Password"}
             label={"Confirm Password"}
           />
-          
-          <ErrorBar error={errors.repassword}/>
+
+          <ErrorBar error={errors.repassword} />
 
           <input
             className="w-72 h-9 bg-stone-800 rounded text-white cursor-pointer"
