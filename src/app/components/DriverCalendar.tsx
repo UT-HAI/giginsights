@@ -24,7 +24,7 @@ export default function DriverCalendar({
     return `hsla(${hue}, ${saturation}%, ${lightness}%, 0.8)`; // With opacity
   }
 
-  function DaySummary({ daySummary }) {
+  function DaySummary({ daySummary }: {daySummary: any}) {
     return (
       <div className="text-sm">
         <p>
