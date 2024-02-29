@@ -14,6 +14,8 @@ model users {
   created     DateTime      @default(now())
   updated     DateTime      @default(now())
   credentials credentials[]
+  profiles    profiles?
+  files       files?
 }
 
 model credentials {
@@ -21,7 +23,7 @@ model credentials {
   user_id      Int      @unique
   authtype     authtype
   passwordhash String?  @db.VarChar
-  users        users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users        users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model profiles {
@@ -32,6 +34,14 @@ model profiles {
   race      String? @db.VarChar
   ethnicity String?
   income    String?
+  users     users   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model files {
+  id        Int     @id @default(autoincrement())
+  user_id   Int     @unique
+  ride_data String?
+  users     users   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 enum authtype {

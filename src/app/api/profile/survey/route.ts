@@ -14,48 +14,6 @@ const surveySchema = z.object({
   income: z.string(),
 });
 
-export async function GET(request: Request) {
-  // @ts-ignore
-  const session = await getServerSession({ request });
-  const email = session?.user?.email;
-
-  if (!email) {
-    throw new Error("Email not found");
-  }
-
-  const prisma = new PrismaClient();
-  const user = await prisma.users.findFirst({
-    where: {
-      email: email,
-    },
-  });
-
-  if (!user) {
-    return new Response(null, {
-      status: 500,
-    });
-  }
-
-  const data = await prisma.profiles.findFirst({
-    where: {
-      user_id: user.id,
-    },
-  });
-
-  if (!data) {
-    return new Response(null, {
-      status: 404,
-    });
-  } else {
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
-}
-
 export async function POST(request: Request) {
   // @ts-ignore
   const session = await getServerSession({ request });
