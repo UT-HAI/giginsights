@@ -35,7 +35,6 @@ export default async function Page() {
   }
 
   const summary = (await parseCSV(fileData.ride_data)) ?? {};
-  console.log(summary);
 
   return (
     <div className="flex justify-center items-center">

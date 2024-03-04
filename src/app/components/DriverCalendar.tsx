@@ -15,6 +15,7 @@ export default function DriverCalendar({
 }: {
   data: Record<string, any>;
 }) {
+
   function calculateColor(fare: number): string {
     const maxFare = 500;
     const ratio = Math.min(fare, maxFare) / maxFare;
@@ -24,29 +25,60 @@ export default function DriverCalendar({
     return `hsla(${hue}, ${saturation}%, ${lightness}%, 0.8)`; // With opacity
   }
 
-  function DaySummary({ daySummary }: {daySummary: any}) {
+  function DaySummary({ daySummary }: { daySummary: any }) {
     return (
-      <div className="text-sm">
-        <p>
-          Avg Distance:{" "}
-          {(daySummary["sumDistances"] / daySummary["numberOfTrips"]).toFixed(
-            2,
-          )}{" "}
-          Mi.
-        </p>
-        <p>Total Fares: ${daySummary["sumFares"].toFixed(2)}</p>
-        <p>
-          Avg Duration:{" "}
-          {(
-            daySummary["sumDurations"] /
-            daySummary["numberOfTrips"] /
-            60
-          ).toFixed(2)}{" "}
-          Mins
-        </p>
-        <p>Number of Trips: {daySummary["numberOfTrips"]}</p>
+      <div className="text-sm flex flex-col items-start">
+        <p>Trips: <b>{daySummary["numberOfTrips"]}</b> trips</p>
+        <p>Earnings: <b>${daySummary["sumFares"].toFixed(2)}</b></p>
+        <p>Time driving passengers: <b>{(daySummary["sumDurations"] / 60).toFixed(2)} </b> minutes</p>
+        <p>Fare per minute: <b>${(daySummary["sumFares"] / daySummary["sumDurations"] * 60).toFixed(2)}</b></p>
+        <div className="flex self-center justify-self-center p-2">
+        <DayTripBreakdown daySummary={daySummary}></DayTripBreakdown>
+        </div>
       </div>
     );
+  }
+
+  function convertToAmPm(hour: number) {
+    // Validate the input to ensure it's within the expected range
+    if (hour < 0 || hour > 23) {
+      return 'Invalid hour';
+    }
+
+    // Determine the suffix and adjust hours for 12-hour format
+    const suffix = hour < 12 ? 'AM' : 'PM';
+    let hourIn12 = hour % 12;
+
+    // Adjust the hour since 0 should be converted to 12 for 12-hour format
+    if (hourIn12 === 0) {
+      hourIn12 = 12;
+    }
+
+    return `${hourIn12} ${suffix}`;
+  }
+
+  function DayTripBreakdown({ daySummary }: { daySummary: any }) {
+    const tripTimes = daySummary['tripTimes']
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th className="text-xs px-2">Time</th>
+            <th className="text-xs px-2">Trips</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(tripTimes).map((key) => (
+            <tr>
+              <td className="text-xs px-2">{convertToAmPm(key)}</td>
+              <td className="text-xs px-2">{tripTimes[key]} trips</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+
+
   }
 
   function DateTime(props: DayContentProps) {

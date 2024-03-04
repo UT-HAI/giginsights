@@ -30,6 +30,7 @@ export default async function parseCSV(downloadUrl: string) {
   const summary = records.reduce((acc: Array<any>, trip: any) => {
     // Extract the date part from the 'Local Request Timestamp'
     const date = trip["Local Request Timestamp"].split("T")[0];
+    const time = trip["Local Request Timestamp"].split("T")[1].split(":")[0];
 
     // Initialize the object for this date if it doesn't exist
     if (!acc[date]) {
@@ -39,6 +40,7 @@ export default async function parseCSV(downloadUrl: string) {
         sumFares: 0,
         sumDurations: 0,
         numberOfTrips: 0,
+        tripTimes: {}
       };
     }
 
@@ -47,6 +49,10 @@ export default async function parseCSV(downloadUrl: string) {
     acc[date].sumFares += trip["Local Original Fare"];
     acc[date].sumDurations += trip["Duration (Seconds)"];
     acc[date].numberOfTrips += 1;
+    if (!acc[date].tripTimes[time]) {
+      acc[date].tripTimes[time] = 0
+    }
+    acc[date].tripTimes[time] += 1;
 
     return acc;
   }, {});
