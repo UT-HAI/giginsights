@@ -1,7 +1,7 @@
 "use client";
 
+import { ActionLink } from "@/components/ui/ActionLink";
 import { signOut } from "next-auth/react";
-import { ActionLink } from "../components/ActionLink";
 
 export default function Page() {
   const handleSignOut = (e: any) => {

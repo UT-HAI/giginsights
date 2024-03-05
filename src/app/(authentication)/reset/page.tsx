@@ -1,5 +1,5 @@
-import { InputField } from "@/app/components/InputField";
-import { NavigationIconLink } from "@/app/components/NavigationIconLink";
+import { InputField } from "@/components/forms/InputField";
+import { NavigationIconLink } from "@/components/ui/NavigationIconLink";
 
 export default function Page() {
   return (

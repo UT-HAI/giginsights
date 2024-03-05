@@ -1,21 +1,20 @@
 "use client";
 
-import { NavigationIconLink } from "@/app/components/NavigationIconLink";
+import { DynamicContractorJobs } from "@/components/forms/DynamicContractorJobs";
+import { DynamicGigAppJobs } from "@/components/forms/DynamicGigAppJobs";
+import { DynamicW2Jobs } from "@/components/forms/DynamicW2Jobs";
+import { SelectCities } from "@/components/forms/SelectCities";
+import { NavigationIconLink } from "@/components/ui/NavigationIconLink";
 import { useState } from "react";
-import { ErrorBar } from "@/app/components/ErrorBar";
-import { SelectCities } from "@/app/components/SelectCities";
-import { DynamicGigAppJobs } from "@/app/components/DynamicGigAppJobs";
-import { DynamicContractorJobs } from "@/app/components/DynamicContractorJobs";
-import { DynamicW2Jobs } from "@/app/components/DynamicW2Jobs";
 
 export default function Page() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState<boolean>(false);
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
 
-    const formData = new FormData(event.target); // Create FormData object from the form
+    const formData = new FormData(event.target as HTMLFormElement); // Create FormData object from the form
     const data = Object.fromEntries(formData); // Convert to a plain object
 
     try {

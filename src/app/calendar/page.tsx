@@ -1,9 +1,9 @@
-import DriverCalendar from "../components/DriverCalendar";
 import React from "react";
-import FileDropzone from "../components/FileDropZone";
-import parseCSV from "./utils";
+import {parseCSV, downloadFile } from "./utils";
 import { getServerSession } from "next-auth";
 import { PrismaClient } from "@prisma/client";
+import DriverCalendar from "@/components/ui/DriverCalendar";
+import FileDropzone from "@/components/forms/FileDropZone";
 
 export default async function Page() {
   const session = await getServerSession();
@@ -34,7 +34,8 @@ export default async function Page() {
     return <div>Something went wrong</div>;
   }
 
-  const summary = (await parseCSV(fileData.ride_data)) ?? {};
+  const file = await downloadFile(fileData.ride_data);
+  const summary = await parseCSV(file)
 
   return (
     <div className="flex justify-center items-center">

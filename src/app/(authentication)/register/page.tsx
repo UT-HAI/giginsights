@@ -4,19 +4,19 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { NavigationIconLink } from "@/app/components/NavigationIconLink";
-import { InputField } from "@/app/components/InputField";
-import { ErrorBar } from "@/app/components/ErrorBar";
+import { NavigationIconLink } from "@/components/ui/NavigationIconLink";
+import { InputField } from "@/components/forms/InputField";
+import { ErrorBar } from "@/components/ui/ErrorBar";
 
 export default function Page() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
 
     // Form data to be sent
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target as HTMLFormElement);
     const formProps = Object.fromEntries(formData);
 
     try {

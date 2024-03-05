@@ -1,6 +1,6 @@
-import SurveyForm from "@/app/components/SurveyForm";
 import { getServerSession } from "next-auth";
 import { PrismaClient } from "@prisma/client";
+import SurveyForm from "@/components/forms/SurveyForm";
 
 async function getSurveyData() {
   // @ts-ignore

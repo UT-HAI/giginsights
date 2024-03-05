@@ -3,15 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { NavigationIconLink } from "@/app/components/NavigationIconLink";
-import { InputField } from "@/app/components/InputField";
+import { NavigationIconLink } from "@/components/ui/NavigationIconLink";
+import { InputField } from "@/components/forms/InputField";
 
 export default function Page() {
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const email = event.target.email.value;
-    const password = event.target.password.value;
+    const target = event.target as HTMLFormElement;
+    const email = target.email.value;
+    const password = target.password.value;
 
     // Here we call signIn with 'credentials' and pass username and password
     const result = await signIn("credentials", {

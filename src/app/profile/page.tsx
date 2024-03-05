@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { NavigationIconLink } from "../components/NavigationIconLink";
-import { ActionLink } from "../components/ActionLink";
-import { signOut } from "next-auth/react";
+import { NavigationIconLink } from "@/components/ui/NavigationIconLink";
+import { ActionLink } from "@/components/ui/ActionLink";
 
 export default function Page() {
   return (
