@@ -1,60 +1,29 @@
-"use client"
-
-import React from "react";
-// import "./styles.css";
-import L from "leaflet";
-import { MapContainer, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet.motion/dist/leaflet.motion.js";
+import fs from 'fs';
+import { parse } from 'csv-parse/sync';
+import Map from '@/components/ui/Map';
 
 export default function Page() {
-  const [mapContext, setMapContext] = React.useState();
+  const results: number[] = [];
 
-  const handleAddMarkerClick = () => {
-    const instance = L.motion.polyline(
-      [
-        [-8.798297, 115.222575],
-        [-8.784937, 115.194508]
-      ],
-      {
-        color: "red"
-      },
-      {
-        auto: true,
-        duration: 10000
-      },
-      {
-        removeOnEnd: false,
-        showMarker: true,
-        icon: L.icon({
-          iconUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Circle-icons-car.svg/1200px-Circle-icons-car.svg.png",
-          iconSize: [20, 30]
-        })
-      }
-    );
+  // Read the file into a string
+  const fileContent = fs.readFileSync('./src/driver_app_analytics-0.csv', 'utf8');
 
-    mapContext && mapContext.addLayer(instance);
-  };
+  // Parse the CSV content
+  const records = parse(fileContent, {
+    columns: true,
+    skip_empty_lines: true
+  });
+
+  // Process the first 1000 records to get latitude and longitude
+  const latLongList = records.slice(0, 1000).map(row => [parseFloat(row.Latitude), parseFloat(row.Longitude)]);
 
   return (
-    <>
-      <button onClick={handleAddMarkerClick}>add marker</button>
-      <MapContainer
-        center={[-8.791172, 115.213391]}
-        zoom={13}
-        scrollWheelZoom={false}
-        style={{
-          height: "100vh",
-          width: "100%"
-        }}
-        whenReady={(event) => setMapContext(event.target)}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-      </MapContainer>
-    </>
-  );
+    <div className="flex justify-center items-center">
+      <div className="flex flex-col items-center pl-6 pt-6">
+        <h1 className="text-stone-800 text-2xl font-semibold font-['Inter'] mb-6 ml-6">Map</h1>
+        <Map coordinates={latLongList}></Map>
+      </div>
+    </div>
+  )
+
 }
