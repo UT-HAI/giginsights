@@ -34,7 +34,7 @@ export default function DriverCalendar({
         <p>Time driving passengers: <b>{(daySummary["sumDurations"] / 60).toFixed(2)} </b> minutes</p>
         <p>Fare per minute: <b>${(daySummary["sumFares"] / daySummary["sumDurations"] * 60).toFixed(2)}</b></p>
         <div className="flex self-center justify-self-center p-2">
-        <DayTripBreakdown daySummary={daySummary}></DayTripBreakdown>
+          <DayTripBreakdown daySummary={daySummary}></DayTripBreakdown>
         </div>
       </div>
     );
@@ -58,28 +58,28 @@ export default function DriverCalendar({
     return `${hourIn12} ${suffix}`;
   }
 
-  
-function DayTripBreakdown({ daySummary }: { daySummary: DaySummary }) {
-  const tripTimes = daySummary['tripTimes']
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th className="text-xs px-2">Time</th>
-          <th className="text-xs px-2">Trips</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.keys(tripTimes).map((time) => (
-          <tr key={time}> {/* Add the key prop here */}
-            <td className="text-xs px-2">{convertToAmPm(Number(time))}</td>
-            <td className="text-xs px-2">{tripTimes[time]} trips</td>
+
+  function DayTripBreakdown({ daySummary }: { daySummary: DaySummary }) {
+    const tripTimes = daySummary['tripTimes']
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th className="text-xs px-2">Time</th>
+            <th className="text-xs px-2">Trips</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  )
-}
+        </thead>
+        <tbody>
+          {Object.keys(tripTimes).map((time) => (
+            <tr key={time}> {/* Add the key prop here */}
+              <td className="text-xs px-2">{convertToAmPm(Number(time))}</td>
+              <td className="text-xs px-2">{tripTimes[time]} trips</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  }
 
 
   function DateTime(props: DayContentProps) {
@@ -124,7 +124,8 @@ function DayTripBreakdown({ daySummary }: { daySummary: DaySummary }) {
     <Calendar
       components={{ DayContent: DateTime }}
       fixedWeeks
-      showOutsideDays={false}
+      numberOfMonths={1}
+      showOutsideDays={true}
     />
   );
 }

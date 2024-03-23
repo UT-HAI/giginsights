@@ -24,6 +24,7 @@ export default function Page() {
         <ActionLink href={"/quests"} label={"Upload Quest Data"} />
         <ActionLink href={"/trips"} label={"Check Trip Data"} />
         <ActionLink href={"/calendar"} label={"Check Daily Earnings"} />
+        <ActionLink href={"/maps"} label={"Check daily route"} />
 
         <a
           href="#"
