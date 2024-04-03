@@ -126,7 +126,7 @@ export default class ScrollCalendar extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     if (props.selectedDate) {
       this.setSelectedDate(props.selectedDate);
     }

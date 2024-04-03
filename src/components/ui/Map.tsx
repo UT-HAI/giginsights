@@ -2,12 +2,12 @@
 
 import React from "react";
 // import "./styles.css";
-import L from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.motion/dist/leaflet.motion.js";
 
-export default function Map({ coordinates }: { coordinates: number[] }) {
+export default function Map({ coordinates }: { coordinates: LatLngExpression[] }) {
   const [mapContext, setMapContext] = React.useState();
 
   const handleAddMarkerClick = () => {
@@ -46,6 +46,7 @@ export default function Map({ coordinates }: { coordinates: number[] }) {
           height: "500px",
           width: "500px"
         }}
+        // @ts-ignore
         whenReady={(event: any) => setMapContext(event.target)}
       >
         <TileLayer
