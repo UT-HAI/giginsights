@@ -18,7 +18,7 @@ export default function Map({ coordinates }: { coordinates: number[] }) {
       },
       {
         auto: true,
-        duration: 10000
+        duration: 20000
       },
       {
         removeOnEnd: false,

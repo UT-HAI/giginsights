@@ -3,7 +3,6 @@ import { parse } from 'csv-parse/sync';
 import Map from '@/components/ui/Map';
 
 export default function Page() {
-  const results: number[] = [];
 
   // Read the file into a string
   const fileContent = fs.readFileSync('./src/driver_app_analytics-0.csv', 'utf8');
@@ -15,7 +14,7 @@ export default function Page() {
   });
 
   // Process the first 1000 records to get latitude and longitude
-  const latLongList = records.slice(0, 1000).map(row => [parseFloat(row.Latitude), parseFloat(row.Longitude)]);
+  const latLongList = records.slice(0, 4000).map(row => [parseFloat(row.Latitude), parseFloat(row.Longitude)]);
 
   return (
     <div className="flex justify-center items-center">

@@ -19,7 +19,7 @@ function calculateColor(fare) {
 
 function DaySummaryComponent({ daySummary }) {
   return (
-    <div className="text-sm flex flex-col items-start">
+    <div className="p-7 text-sm flex flex-col items-start">
       <p>Trips: <b>{daySummary["numberOfTrips"]}</b> trips</p>
       <p>Earnings: <b>${daySummary["sumFares"].toFixed(2)}</b></p>
       <p>Time driving passengers: <b>{(daySummary["sumDurations"] / 60).toFixed(2)} </b> minutes</p>

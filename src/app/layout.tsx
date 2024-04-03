@@ -1,4 +1,6 @@
 import "./globals.css";
+import '@mantine/core/styles.css';
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 
 export const metadata = {
   title: "GigInsights",
@@ -12,13 +14,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript />
+      </head>
       <link
         rel="icon"
         href="/magnifyingglasscar.jpg"
         type="image/<generated>"
         sizes="<generated>"
       />
-      <body>{children}</body>
+      <body>
+        <MantineProvider>
+          {children}
+        </MantineProvider>
+      </body>
     </html>
   );
 }
