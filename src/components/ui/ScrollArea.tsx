@@ -19,11 +19,11 @@ export default function ScrollAreaButtons({ content }: { content: any }) {
 
       <Group justify="center">
         <button
-          className={`bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded`}
+          className={`bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded`}
           onClick={scrollToTop}>Driver History Start
         </button>
         <button 
-          className={`bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded`}
+          className={`bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded`}
           onClick={scrollToBottom}>Present Day
         </button>
       </Group>
