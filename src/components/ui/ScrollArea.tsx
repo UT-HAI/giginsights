@@ -1,16 +1,13 @@
 'use client'
 
 import { useRef } from 'react';
-import { ScrollArea, Button, Stack, Group } from '@mantine/core';
+import { ScrollArea, Stack, Group } from '@mantine/core';
 
-export default function ScrollAreaButtons({content}: {content: any}) {
+export default function ScrollAreaButtons({ content }: { content: any }) {
   const viewport = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () =>
     viewport.current!.scrollTo({ top: viewport.current!.scrollHeight, behavior: 'smooth' });
-
-  const scrollToCenter = () =>
-    viewport.current!.scrollTo({ top: viewport.current!.scrollHeight / 2, behavior: 'smooth' });
 
   const scrollToTop = () => viewport.current!.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -21,8 +18,14 @@ export default function ScrollAreaButtons({content}: {content: any}) {
       </ScrollArea>
 
       <Group justify="center">
-        <Button onClick={scrollToTop}>Driver History Start</Button>
-        <Button onClick={scrollToBottom}>Present Day</Button>
+        <button
+          className={`bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded`}
+          onClick={scrollToTop}>Driver History Start
+        </button>
+        <button 
+          className={`bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded`}
+          onClick={scrollToBottom}>Present Day
+        </button>
       </Group>
     </Stack>
   );
