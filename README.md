@@ -2,7 +2,10 @@
 
 #### In Progress...
 
-Helping Uber drivers discover discriminatory practices in driving
+GigInsights is an app that helps Uber drivers understand their own riding patterns better.
+
+For places to contribute, look at the todo.md, for a general overview of the
+architecture of the project, look at the architecture.md of the project
 
 ## Getting Started
 
