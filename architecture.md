@@ -6,13 +6,30 @@ The relevant technologies used in this project are:
       Code, for more info on how Next App Router works look at:
       https://nextjs.org/docs/app
 - Prisma - for data schemas
-- PostgreSQL (Currently through Vercel, soon to change to Heroku)
-- 
+- PostgreSQL (Currently through Vercel, soon to change to whatever)
+- Blob storage (Currently through Vercel, also soon to change to whatever)
 - Google Cloud Engine for OAuth and NextAuth for OAuth on server side
 
 ## High level route division
 
+Because this App uses `next.js`, the route division is pretty straightforward.
+In general, there are API routes in the api folder, for submitting data. The
+rest of the pages are in their respective folder. There is a: 
 
+- Authentication
+    - login
+    - register
+    - reset
+- calendar
+- home
+- maps
+- profile
+    - info
+    - survey
+
+## Authentication
+
+Authentication is done with NextAuth.js. The relevant variables to set are below in the environment variables. Passwords/Credential Tokens are stored in Postgres.
 
 ## Database
 
@@ -25,3 +42,20 @@ are essentially two databases.
     3. Profiles - containes profile info of users (race, ethnicity, age, etc.)
     4. Files - For calendars and Maps, these contain the URL's of the files (currently using vercel blob storage but that may change)
 2. Blob Storage - For storage of CSV files
+
+## Revelvant environment variables
+
+The environment variables that matter are the following: 
+
+### Auth
+
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+NEXTAUTH_URL
+NEXTAUTH_SECRET
+
+### PostgresSQL
+POSTGRES_PRISMA_URL
+
+### Blob Storage
+BLOB_READ_WRITE_TOKEN
